@@ -10,8 +10,11 @@ function _git_branch_name
   echo (command git symbolic-ref HEAD 2> /dev/null | sed -e 's|^refs/heads/||')
 end
 
+set -q fish_git_prompt_untracked_files; or set fish_git_prompt_untracked_files normal
+
 function _git_is_dirty
-  echo (command git status -s --ignore-submodules=dirty 2> /dev/null)
+  set untracked_syntax "--untracked-files=$fish_git_prompt_untracked_files"
+  echo (command git status -s --ignore-submodules=dirty $untracked_syntax 2> /dev/null)
 end
 
 function fish_prompt
